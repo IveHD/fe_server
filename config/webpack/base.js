@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { PATH } = require('../const.js');
-
+console.log(PATH.DIST);
 const getEntries = () => {
 	let entries = {};
 	const readEntry = _path => {
@@ -10,18 +10,17 @@ const getEntries = () => {
 				readEntry(__path);
 				return;
 			}
-			entries[name] = _path + '/' + name;
+			let p = __path.replace(PATH.SRC_FRONTEND_ENTRY_ROOT, '').replace(/\.js/, '');
+			entries[p] = _path + '/' + name;
 		});
 	}
-	readEntry(PATH.SRC_FRONTEND_ROOT + '/page');
-	console.log(entries);
+	readEntry(PATH.SRC_FRONTEND_ENTRY_ROOT);
 	return entries;
 }
-// getEntries();
 module.exports = {
 	entry: getEntries(),
 	output: {
-		filename: 'asd/[name].min.js',
-		path: PATH.ROOT + '/dist'
+		filename: '[name].min.js',
+		path: PATH.DIST
 	}
 }
